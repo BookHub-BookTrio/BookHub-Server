@@ -1,2 +1,2 @@
 # BookHub-Server
-BoohTrio Team's Server Repository
+BookTrio Team's Server Repository
