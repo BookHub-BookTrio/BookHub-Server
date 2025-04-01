@@ -39,6 +39,9 @@ dependencies {
 
     // 스프링 시큐리티 의존성 추가
     implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // Swagger 관련 의존성 추가
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
 }
 
 tasks.named('test') {
