@@ -1,1 +1,42 @@
-spring.application.name=BookHub
+spring:
+  profiles:
+    active: prod
+  datasource:
+    url: ${spring.datasource.url}
+    username: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: false
+        use_sql_comments: true
+
+cloud:
+  aws:
+    credentials:
+      accessKey: ${cloud.aws.credentials.accessKey}
+      secretKey: ${cloud.aws.credentials.secret-key}
+    s3:
+      bucket: ${cloud.aws.s3.bucket}
+    region: ${cloud.aws.region}
+    stack:
+      auto: false
+
+jwt:
+  secret: ${jwt.secret}
+  access-token-validity-in-milliseconds: ${jwt.access-token-validity-in-milliseconds}
+
+client-id: ${client-id}
+client-secret: ${client-secret}
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
