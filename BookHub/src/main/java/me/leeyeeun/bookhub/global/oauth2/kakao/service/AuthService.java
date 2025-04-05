@@ -42,13 +42,4 @@ public class AuthService {
         Member member = memberService.findByRefreshToken(refreshToken.refreshToken());
         return tokenProvider.reIssueTokenByRefresh(member, refreshToken.refreshToken());
     }
-
-    // 로그아웃
-    @Transactional
-    public void logOut(Long userId) {
-        Member member = memberService.findById(userId);
-        member.updateRefreshToken(null);
-    }
-
-    // Todo: 회원탈퇴 로직 작성하기 (소셜로그인)
 }

@@ -5,7 +5,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import me.leeyeeun.bookhub.global.template.RspTemplate;
-import me.leeyeeun.bookhub.member.controller.dto.response.MemberLoginRequestDto;
+import me.leeyeeun.bookhub.global.token.TokenProvider;
+import me.leeyeeun.bookhub.member.controller.dto.request.MemberJoinRequestDto;
+import me.leeyeeun.bookhub.member.controller.dto.request.MemberLoginRequestDto;
 import me.leeyeeun.bookhub.member.entity.Member;
 import me.leeyeeun.bookhub.member.service.MemberService;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberLoginController {
 
     private final MemberService memberService;
+    private final TokenProvider tokenProvider;
 
     @PostMapping("/login")
     @Operation(method = "POST", description = "자체 로그인을 진행해 로그인을 진행합니다.")
@@ -29,5 +32,14 @@ public class MemberLoginController {
     ) {
         Member member = memberService.login(memberRequestDto);
         return RspTemplate.success(HttpStatus.OK , "로그인 성공", member);
+    }
+
+    @PostMapping("/join")
+    @Operation(method = "POST", description = "자체 로그인을 진행해 회원가입을 진행합니다.")
+    public RspTemplate<?> joinInternal(
+            @RequestBody @Valid MemberJoinRequestDto memberJoinRequestDto
+    ) {
+        Member member = memberService.join(memberJoinRequestDto);
+        return RspTemplate.success(HttpStatus.OK,"회원가입 성공", tokenProvider.createToken(member));
     }
 }

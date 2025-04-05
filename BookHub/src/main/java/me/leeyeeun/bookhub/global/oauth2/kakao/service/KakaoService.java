@@ -7,12 +7,9 @@ import me.leeyeeun.bookhub.global.oauth2.kakao.domain.LoginResult;
 import me.leeyeeun.bookhub.global.oauth2.kakao.domain.SocialType;
 import me.leeyeeun.bookhub.global.oauth2.kakao.dto.KakaoTokenResponseDto;
 import me.leeyeeun.bookhub.global.oauth2.kakao.info.KakaoUserInfo;
-import me.leeyeeun.bookhub.global.token.Token;
-import me.leeyeeun.bookhub.global.token.TokenProvider;
 import me.leeyeeun.bookhub.member.entity.Member;
 import me.leeyeeun.bookhub.member.entity.Role;
 import me.leeyeeun.bookhub.member.repository.MemberRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
@@ -21,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-import java.util.HashMap;
 import java.util.Optional;
 
 @Slf4j
@@ -114,30 +110,6 @@ public class KakaoService {
 
         return new LoginResult(member.get());
 
-    }
-
-    public void deleteMember(final Member member) {
-        HashMap responseMap = null;
-
-        try {
-            responseMap = WebClient.create(KAUTH_USER_URL_HOST)
-                    .post()
-                    .uri(uriBuilder -> uriBuilder
-                            .scheme("https")
-                            .path("/v1/user/unlink")
-                            .queryParam("target_id_type", "user_id")
-                            .queryParam("target_id", member.getId())
-                            .build(true))
-                    .header(HttpHeaders.CONTENT_TYPE,
-                            HttpHeaderValues.APPLICATION_X_WWW_FORM_URLENCODED.toString())
-                    .header(HttpHeaders.AUTHORIZATION, "KakaoAK " + clientSecret)
-                    .retrieve()
-                    .bodyToMono(HashMap.class)
-                    .block();
-        }catch (Exception e){
-            log.info(e.getMessage());
-        }
-        log.info("삭제된 카카오 사용자 id:"+ responseMap.get("id").toString());
     }
 
     @Transactional(readOnly = true)
