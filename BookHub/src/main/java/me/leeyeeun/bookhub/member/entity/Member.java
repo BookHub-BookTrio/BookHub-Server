@@ -40,6 +40,8 @@ public class Member {
     @Column(name = "pictureUrl")
     private String pictureUrl;
 
+    private String introduction;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;

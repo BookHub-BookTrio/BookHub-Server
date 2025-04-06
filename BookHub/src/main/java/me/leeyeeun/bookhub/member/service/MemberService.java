@@ -4,12 +4,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.leeyeeun.bookhub.member.controller.dto.request.MemberJoinRequestDto;
 import me.leeyeeun.bookhub.member.controller.dto.request.MemberLoginRequestDto;
+import me.leeyeeun.bookhub.member.controller.dto.response.MemberInfoResponseDto;
 import me.leeyeeun.bookhub.member.entity.Member;
 import me.leeyeeun.bookhub.member.entity.Role;
 import me.leeyeeun.bookhub.member.repository.MemberRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.security.Principal;
 
 @Slf4j
 @Service
@@ -72,4 +75,20 @@ public class MemberService {
         }
         return member;
     }
+
+    @Transactional(readOnly = true)
+    public MemberInfoResponseDto getMemberInfo(Principal principal) {
+        String id = principal.getName();
+        Member member = findById(Long.valueOf(id));
+
+        return new MemberInfoResponseDto(
+                member.getId(),
+                member.getName(),
+                member.getNickname(),
+                member.getIntroduction(),
+                member.getEmail(),
+                member.getRole()
+        );
+    }
+
 }
