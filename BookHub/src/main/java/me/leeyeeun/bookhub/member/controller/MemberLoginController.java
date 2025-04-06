@@ -31,7 +31,7 @@ public class MemberLoginController {
             @RequestBody @Valid MemberLoginRequestDto memberRequestDto
     ) {
         Member member = memberService.login(memberRequestDto);
-        return RspTemplate.success(HttpStatus.OK , "로그인 성공", member);
+        return RspTemplate.success(HttpStatus.OK , "로그인 성공", tokenProvider.createToken(member));
     }
 
     @PostMapping("/join")
