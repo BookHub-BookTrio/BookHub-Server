@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import me.leeyeeun.bookhub.global.oauth2.kakao.domain.SocialType;
 
+import java.time.LocalDate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -77,5 +78,37 @@ public class Member {
 
     public void updateRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
+    }
+
+    public void update(String name,
+                       String nickname,
+                       String introduction,
+                       String email) {
+        this.name = updateName(name);
+        this.nickname = updateNickname(nickname);
+        this.introduction = updateIntrodution(introduction);
+        this.email = updateEmail(email);
+    }
+
+    public String updateName(String name) {
+        if (name == null || name.isBlank())
+            return this.name;
+        return name;
+    }
+
+    public String updateNickname(String nickname) {
+        if (nickname == null || nickname.isBlank())
+            return this.nickname;
+        return nickname;
+    }
+
+    public String updateIntrodution(String introduction) {
+        return introduction;
+    }
+
+    public String updateEmail(String email) {
+        if (email == null || email.isBlank())
+            return this.email;
+        return email;
     }
 }

@@ -2,6 +2,7 @@ package me.leeyeeun.bookhub.member.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import me.leeyeeun.bookhub.member.controller.dto.request.MemberInfoUpdateRequestDto;
 import me.leeyeeun.bookhub.member.controller.dto.request.MemberJoinRequestDto;
 import me.leeyeeun.bookhub.member.controller.dto.request.MemberLoginRequestDto;
 import me.leeyeeun.bookhub.member.controller.dto.response.MemberInfoResponseDto;
@@ -89,6 +90,19 @@ public class MemberService {
                 member.getEmail(),
                 member.getRole()
         );
+    }
+
+    @Transactional
+    public MemberInfoUpdateRequestDto updateMemberInfo(Principal principal, final MemberInfoUpdateRequestDto memberInfoUpdateRequestDto) {
+        String id = principal.getName();
+        Member member = findById(Long.valueOf(id));
+
+        member.update(memberInfoUpdateRequestDto.name(),
+                memberInfoUpdateRequestDto.nickname(),
+                memberInfoUpdateRequestDto.introduction(),
+                memberInfoUpdateRequestDto.email());
+
+        return new MemberInfoUpdateRequestDto(member);
     }
 
 }
