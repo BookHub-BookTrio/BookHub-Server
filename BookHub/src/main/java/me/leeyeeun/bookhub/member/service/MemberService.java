@@ -2,14 +2,18 @@ package me.leeyeeun.bookhub.member.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import me.leeyeeun.bookhub.member.controller.dto.request.MemberInfoUpdateRequestDto;
 import me.leeyeeun.bookhub.member.controller.dto.request.MemberJoinRequestDto;
 import me.leeyeeun.bookhub.member.controller.dto.request.MemberLoginRequestDto;
+import me.leeyeeun.bookhub.member.controller.dto.response.MemberInfoResponseDto;
 import me.leeyeeun.bookhub.member.entity.Member;
 import me.leeyeeun.bookhub.member.entity.Role;
 import me.leeyeeun.bookhub.member.repository.MemberRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.security.Principal;
 
 @Slf4j
 @Service
@@ -72,4 +76,35 @@ public class MemberService {
         }
         return member;
     }
+
+    @Transactional(readOnly = true)
+    public MemberInfoResponseDto getMemberInfo(Principal principal) {
+        String id = principal.getName();
+        Member member = findById(Long.valueOf(id));
+
+        return new MemberInfoResponseDto(
+                member.getPictureUrl(),
+                member.getName(),
+                member.getNickname(),
+                member.getIntroduction(),
+                member.getEmail(),
+                member.getRole()
+        );
+    }
+
+    @Transactional
+    public MemberInfoUpdateRequestDto updateMemberInfo(Principal principal, final MemberInfoUpdateRequestDto memberInfoUpdateRequestDto) {
+        String id = principal.getName();
+        Member member = findById(Long.valueOf(id));
+
+        member.update(
+                memberInfoUpdateRequestDto.pictureUrl(),
+                memberInfoUpdateRequestDto.name(),
+                memberInfoUpdateRequestDto.nickname(),
+                memberInfoUpdateRequestDto.introduction(),
+                memberInfoUpdateRequestDto.email());
+
+        return new MemberInfoUpdateRequestDto(member);
+    }
+
 }
