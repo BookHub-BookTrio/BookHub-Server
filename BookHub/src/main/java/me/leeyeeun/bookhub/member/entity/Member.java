@@ -80,14 +80,20 @@ public class Member {
         this.refreshToken = refreshToken;
     }
 
-    public void update(String name,
+    public void update(String pictureUrl,
+                       String name,
                        String nickname,
                        String introduction,
                        String email) {
+        this.pictureUrl = updatePictureUrl(pictureUrl);
         this.name = updateName(name);
         this.nickname = updateNickname(nickname);
         this.introduction = updateIntrodution(introduction);
         this.email = updateEmail(email);
+    }
+
+    public String updatePictureUrl(String pictureUrl) {
+        return pictureUrl;
     }
 
     public String updateName(String name) {

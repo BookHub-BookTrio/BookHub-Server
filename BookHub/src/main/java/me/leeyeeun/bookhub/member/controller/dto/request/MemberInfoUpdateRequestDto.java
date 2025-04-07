@@ -4,6 +4,7 @@ import me.leeyeeun.bookhub.member.entity.Member;
 import me.leeyeeun.bookhub.member.entity.Role;
 
 public record MemberInfoUpdateRequestDto(
+        String pictureUrl,
         String name,
         String nickname,
         String introduction,
@@ -11,6 +12,7 @@ public record MemberInfoUpdateRequestDto(
 ) {
     public MemberInfoUpdateRequestDto(Member member) {
         this(
+                member.getPictureUrl(),
                 member.getName(),
                 member.getNickname(),
                 member.getIntroduction(),

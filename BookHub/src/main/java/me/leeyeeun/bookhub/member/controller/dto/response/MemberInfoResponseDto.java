@@ -4,7 +4,7 @@ import me.leeyeeun.bookhub.member.entity.Member;
 import me.leeyeeun.bookhub.member.entity.Role;
 
 public record MemberInfoResponseDto(
-        Long id,
+        String pictureUrl,
         String name,
         String nickname,
         String introduction,
@@ -13,7 +13,7 @@ public record MemberInfoResponseDto(
 ) {
     public MemberInfoResponseDto(Member member) {
         this(
-                member.getId(),
+                member.getPictureUrl(),
                 member.getName(),
                 member.getNickname(),
                 member.getIntroduction(),

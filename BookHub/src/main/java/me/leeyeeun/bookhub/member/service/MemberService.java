@@ -83,7 +83,7 @@ public class MemberService {
         Member member = findById(Long.valueOf(id));
 
         return new MemberInfoResponseDto(
-                member.getId(),
+                member.getPictureUrl(),
                 member.getName(),
                 member.getNickname(),
                 member.getIntroduction(),
@@ -97,7 +97,9 @@ public class MemberService {
         String id = principal.getName();
         Member member = findById(Long.valueOf(id));
 
-        member.update(memberInfoUpdateRequestDto.name(),
+        member.update(
+                memberInfoUpdateRequestDto.pictureUrl(),
+                memberInfoUpdateRequestDto.name(),
                 memberInfoUpdateRequestDto.nickname(),
                 memberInfoUpdateRequestDto.introduction(),
                 memberInfoUpdateRequestDto.email());
