@@ -26,7 +26,7 @@ public class MemberLoginController {
     private final TokenProvider tokenProvider;
 
     @PostMapping("/login")
-    @Operation(method = "POST", description = "자체 로그인을 진행해 로그인을 진행합니다.")
+    @Operation(method = "POST", summary = "자체 로그인", description = "자체 로그인을 진행합니다.")
     public RspTemplate<?> signInInternal(
             @RequestBody @Valid MemberLoginRequestDto memberRequestDto
     ) {
@@ -35,7 +35,7 @@ public class MemberLoginController {
     }
 
     @PostMapping("/join")
-    @Operation(method = "POST", description = "자체 로그인을 진행해 회원가입을 진행합니다.")
+    @Operation(method = "POST", summary = "회원가입", description = "회원가입을 진행합니다.")
     public RspTemplate<?> joinInternal(
             @RequestBody @Valid MemberJoinRequestDto memberJoinRequestDto
     ) {
