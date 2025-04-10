@@ -3,6 +3,7 @@ package me.leeyeeun.bookhub.global.oauth2.kakao.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.leeyeeun.bookhub.global.oauth2.kakao.domain.RefreshToken;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/oauth2")
 @Slf4j
+@Tag(name = "카카오 로그인 API", description = "카카오 로그인 관련 API들입니다.")
 public class KakaoLoginController {
 
     private final KakaoService kakaoService;
@@ -25,7 +27,7 @@ public class KakaoLoginController {
 
     // 소셜 로그인 회원가입 및 로그인
     @GetMapping
-    @Operation(method = "GET", description = "소셜 로그인을 진행해 회원가입 및 로그인을 진행합니다. 소셜 로그인은 자체 회원가입으로 넘어갑니다. 여기서 넘겨주는 토큰을 internal/join(회원가입)으로 넘겨주세요.")
+    @Operation(method = "GET", summary = "카카오 로그인 회원가입 및 로그인", description = "소셜 로그인을 진행해 회원가입 및 로그인을 진행합니다. 소셜 로그인은 자체 회원가입으로 넘어갑니다. 여기서 넘겨주는 토큰을 internal/join(회원가입)으로 넘겨주세요.")
     public RspTemplate<?> kakaoLogin(
             @Parameter(description = "인가코드", in = ParameterIn.QUERY)
             @RequestParam("code") String socialAccessToken

@@ -21,14 +21,14 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping
-    @Operation(method = "GET", description = "회원 정보 조회")
+    @Operation(method = "GET", summary = "회원 정보 조회", description = "회원 정보를 조회합니다.")
     public RspTemplate<MemberInfoResponseDto> getMemberInfo(Principal principal) {
         MemberInfoResponseDto memberInfoResponseDto = memberService.getMemberInfo(principal);
         return RspTemplate.success(HttpStatus.OK,"회원 정보 조회 성공", memberInfoResponseDto);
     }
 
     @PutMapping
-    @Operation(method = "PUT", description = "회원 정보 수정")
+    @Operation(method = "PUT", summary = "회원 정보 수정", description = "회원 정보를 수정합니다. 본인의 정보만 수정이 가능하며 비밀번호는 수정이 불가능합니다.")
     public RspTemplate<MemberInfoUpdateRequestDto> updateMemberInfo(
             Principal principal,
             @RequestBody MemberInfoUpdateRequestDto memberInfoUpdateRequestDto) {
@@ -36,6 +36,5 @@ public class MemberController {
         MemberInfoUpdateRequestDto updatedMember = memberService.updateMemberInfo(principal, memberInfoUpdateRequestDto);
         return RspTemplate.success(HttpStatus.OK, "회원 정보 수정 성공", updatedMember);
     }
-
 
 }
