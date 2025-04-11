@@ -18,12 +18,10 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/oauth2")
 @Slf4j
-@Tag(name = "카카오 로그인 API", description = "카카오 로그인 관련 API들입니다.")
+@Tag(name = "카카오 로그인 API", description = "카카오 로그인 관련 API들 입니다.")
 public class KakaoLoginController {
 
-    private final KakaoService kakaoService;
     private final AuthService authService;
-    private final TokenProvider tokenProvider;
 
     // 소셜 로그인 회원가입 및 로그인
     @GetMapping
