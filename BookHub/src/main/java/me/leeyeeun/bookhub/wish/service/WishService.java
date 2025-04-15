@@ -40,16 +40,16 @@ public class WishService {
     }
 
     @Transactional
-    public Long createWish(WishRequestDto requestDto, Principal principal) {
+    public Long createWish(WishRequestDto wishWishRequestDto, Principal principal) {
         Member member = getMemberFromPrincipal(principal);
 
         Wish wish = Wish.builder()
-                .bookname(requestDto.bookname())
-                .author(requestDto.author())
-                .content(requestDto.content())
-                .progress(requestDto.progress())
-                .category(requestDto.category())
-                .star(requestDto.star())
+                .bookname(wishWishRequestDto.bookname())
+                .author(wishWishRequestDto.author())
+                .content(wishWishRequestDto.content())
+                .progress(wishWishRequestDto.progress())
+                .category(wishWishRequestDto.category())
+                .star(wishWishRequestDto.star())
                 .member(member)
                 .build();
 
@@ -57,11 +57,11 @@ public class WishService {
     }
 
     @Transactional
-    public Wish updateWish(Long wishId, WishRequestDto requestDto, Principal principal) {
+    public Wish updateWish(Long wishId, WishRequestDto wishWishRequestDto, Principal principal) {
         Wish wish = findWishById(wishId);
         getMemberFromPrincipal(principal);
 
-        wish.update(requestDto);
+        wish.update(wishWishRequestDto);
         return wish;
     }
 

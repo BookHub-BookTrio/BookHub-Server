@@ -17,13 +17,13 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/wish")
-@Tag(name = "희망도서 API", description = "WishPage 관련 API들 입니다.")
+@Tag(name = "위시글(독서록) API", description = "WishPage 관련 API들 입니다.")
 public class WishController {
 
     private final WishService wishService;
 
     @PostMapping
-    @Operation(method = "POST", summary = "위시글 작성", description = "위시글을 작성합니다.")
+    @Operation(method = "POST", summary = "위시글 생성", description = "위시글을 생성합니다.")
     public RspTemplate<?> createWish(Principal principal, @RequestBody WishRequestDto wishRequestDto) {
         Long wishId = wishService.createWish(wishRequestDto, principal);
         return RspTemplate.success(HttpStatus.CREATED, "위시글 작성 성공", wishId);
