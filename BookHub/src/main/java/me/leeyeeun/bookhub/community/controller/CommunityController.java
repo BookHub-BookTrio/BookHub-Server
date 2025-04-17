@@ -62,4 +62,14 @@ public class CommunityController {
                 .toList();
         return RspTemplate.success(HttpStatus.OK, "전체 커뮤니티글 조회 성공", commnuityResponseDtos);
     }
+
+    @GetMapping("/my")
+    @Operation(method = "GET", summary = "본인이 작성한 커뮤니티글 조회", description = "본인이 작성한 커뮤니티글만 조회합니다.")
+    public RspTemplate<List<CommnuityResponseDto>> getMyCommunities(Principal principal) {
+        List<Community> communities = communityService.getMyCommunities(principal);
+        List<CommnuityResponseDto> commnuityResponseDtos = communities.stream()
+                .map(CommnuityResponseDto::from)
+                .toList();
+        return RspTemplate.success(HttpStatus.OK, "본인이 작성한 커뮤니티글 조회 성공", commnuityResponseDtos);
+    }
 }
