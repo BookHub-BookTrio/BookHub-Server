@@ -71,4 +71,10 @@ public class CommunityService {
     public List<Community> getAllCommunities() {
         return communityRepository.findAll();
     }
+
+    @Transactional(readOnly = true)
+    public List<Community> getMyCommunities(Principal principal) {
+        Member member = getMemberFromPrincipal(principal);
+        return communityRepository.findAllByMemberId(member.getId());
+    }
 }
