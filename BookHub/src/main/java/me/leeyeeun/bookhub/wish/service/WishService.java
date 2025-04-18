@@ -40,16 +40,16 @@ public class WishService {
     }
 
     @Transactional
-    public Long createWish(WishRequestDto wishWishRequestDto, Principal principal) {
+    public Long createWish(WishRequestDto wishRequestDto, Principal principal) {
         Member member = getMemberFromPrincipal(principal);
 
         Wish wish = Wish.builder()
-                .bookname(wishWishRequestDto.bookname())
-                .author(wishWishRequestDto.author())
-                .content(wishWishRequestDto.content())
-                .progress(wishWishRequestDto.progress())
-                .category(wishWishRequestDto.category())
-                .star(wishWishRequestDto.star())
+                .bookname(wishRequestDto.bookname())
+                .author(wishRequestDto.author())
+                .content(wishRequestDto.content())
+                .progress(wishRequestDto.progress())
+                .category(wishRequestDto.category())
+                .star(wishRequestDto.star())
                 .member(member)
                 .build();
 
@@ -57,11 +57,11 @@ public class WishService {
     }
 
     @Transactional
-    public Wish updateWish(Long wishId, WishRequestDto wishWishRequestDto, Principal principal) {
+    public Wish updateWish(Long wishId, WishRequestDto wishRequestDto, Principal principal) {
         Wish wish = findWishById(wishId);
         getMemberFromPrincipal(principal);
 
-        wish.update(wishWishRequestDto);
+        wish.update(wishRequestDto);
         return wish;
     }
 
@@ -76,5 +76,10 @@ public class WishService {
     @Transactional(readOnly = true)
     public List<Wish> getAllWishes() {
         return wishRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Wish> searchWishesByBookname(String keyword) {
+        return wishRepository.findByBooknameContainingIgnoreCase(keyword);
     }
 }

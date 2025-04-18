@@ -62,4 +62,15 @@ public class WishController {
                 .toList();
         return RspTemplate.success(HttpStatus.OK, "전체 위시글 조회 성공", wishResponseDto);
     }
+
+    @GetMapping("/search")
+    @Operation(method = "GET", summary = "위시글 책 제목 검색", description = "책 제목으로 위시글을 검색합니다.")
+    public RspTemplate<List<WishResponseDto>> searchWishByBookname(@RequestParam String keyword) {
+        List<Wish> wishes = wishService.searchWishesByBookname(keyword);
+        List<WishResponseDto> wishResponseDto = wishes.stream()
+                .map(WishResponseDto::from)
+                .toList();
+
+        return RspTemplate.success(HttpStatus.OK, "검색 결과", wishResponseDto);
+    }
 }
