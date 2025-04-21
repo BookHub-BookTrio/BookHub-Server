@@ -9,4 +9,6 @@ import java.util.Optional;
 public interface WishRepository extends JpaRepository<Wish, Long> {
     Optional<Wish> findById(Long id);
     List<Wish> findByBooknameContainingIgnoreCase(String keyword); // Containing: LIKE %keyword%
+    List<Wish> findAllByMemberId(Long memberId);
+    Optional<Wish> findByIdAndMemberId(Long id, Long memberId);
 }

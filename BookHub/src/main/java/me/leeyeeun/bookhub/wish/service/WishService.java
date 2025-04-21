@@ -74,10 +74,17 @@ public class WishService {
     }
 
     @Transactional(readOnly = true)
-    public List<Wish> getAllWishes() {
-        return wishRepository.findAll();
+    public List<Wish> getAllWishes(Principal principal) {
+        Member member = getMemberFromPrincipal(principal);
+        return wishRepository.findAllByMemberId(member.getId());
     }
 
+    @Transactional(readOnly = true)
+    public Wish findMyWishById(Long wishId, Principal principal) {
+        Member member = getMemberFromPrincipal(principal);
+        return wishRepository.findByIdAndMemberId(wishId, member.getId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 위시글이 존재하지 않거나 권한이 없습니다."));
+    }
     @Transactional(readOnly = true)
     public List<Wish> searchWishesByBookname(String keyword) {
         return wishRepository.findByBooknameContainingIgnoreCase(keyword);

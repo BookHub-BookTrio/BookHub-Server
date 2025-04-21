@@ -49,14 +49,14 @@ public class WishController {
 
     @GetMapping("/detail")
     @Operation(summary = "위시글 한 개 조회", description = "위시글 한 개를 조회합니다.")
-    public RspTemplate<Wish> getWish(@RequestParam Long id) {
-        return RspTemplate.success(HttpStatus.OK, "위시글 조회 성공", wishService.findWishById(id));
+    public RspTemplate<Wish> getWish(@RequestParam Long id, Principal principal) {
+        return RspTemplate.success(HttpStatus.OK, "위시글 조회 성공", wishService.findMyWishById(id, principal));
     }
 
     @GetMapping
     @Operation(method = "GET", summary = "위시글 전체 조회", description = "전체 위시글을 조회합니다.")
-    public RspTemplate<List<WishResponseDto>> getAllWishes() {
-        List<Wish> wishes = wishService.getAllWishes();
+    public RspTemplate<List<WishResponseDto>> getAllWishes(Principal principal) {
+        List<Wish> wishes = wishService.getAllWishes(principal);
         List<WishResponseDto> wishResponseDto = wishes.stream()
                 .map(WishResponseDto::from)
                 .toList();
