@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import me.leeyeeun.bookhub.member.entity.Member;
 import me.leeyeeun.bookhub.wish.controller.dto.request.WishRequestDto;
+import org.springframework.data.annotation.CreatedDate;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -42,6 +45,10 @@ public class Wish {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @CreatedDate
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
 
     public void update(WishRequestDto wishRequestDto) { // 부분 수정 가능
         if (wishRequestDto.bookname() != null) this.bookname = wishRequestDto.bookname();
