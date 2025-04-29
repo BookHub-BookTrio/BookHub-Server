@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -88,5 +89,19 @@ public class WishService {
     @Transactional(readOnly = true)
     public List<Wish> searchWishesByBookname(String keyword) {
         return wishRepository.findByBooknameContainingIgnoreCase(keyword);
+    }
+
+    @Transactional(readOnly = true)
+    public long countWishesByYearAndMonth(Principal principal, int year, int month) {
+        Member member = getMemberFromPrincipal(principal);
+
+        LocalDateTime startOfMonth = LocalDateTime.of(year, month, 1, 0, 0, 0, 0);
+        LocalDateTime endOfMonth = startOfMonth.plusMonths(1).minusNanos(1);
+
+        return wishRepository.findAllByMemberIdAndCreatedAtBetween(
+                member.getId(),
+                startOfMonth,
+                endOfMonth
+        ).size();
     }
 }
