@@ -73,4 +73,16 @@ public class WishController {
 
         return RspTemplate.success(HttpStatus.OK, "검색 결과", wishResponseDto);
     }
+
+    @GetMapping("/month-statistics")
+    @Operation(method = "GET", summary = "특정 년/월 위시글 개수 조회", description = "특정 년도와 월에 작성한 위시글 개수를 조회합니다.")
+    public RspTemplate<Long> countWishesByYearAndMonth(
+            Principal principal,
+            @RequestParam int year,
+            @RequestParam int month
+    ) {
+        long count = wishService.countWishesByYearAndMonth(principal, year, month);
+        return RspTemplate.success(HttpStatus.OK, "위시글 개수 조회 성공", count);
+    }
+
 }
