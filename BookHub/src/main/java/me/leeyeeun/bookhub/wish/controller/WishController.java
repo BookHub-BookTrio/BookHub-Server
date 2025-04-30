@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import me.leeyeeun.bookhub.global.template.RspTemplate;
 import me.leeyeeun.bookhub.wish.controller.dto.request.WishRequestDto;
+import me.leeyeeun.bookhub.wish.controller.dto.response.CategoryPercentageResponseDto;
 import me.leeyeeun.bookhub.wish.controller.dto.response.WishResponseDto;
 import me.leeyeeun.bookhub.wish.entity.Wish;
 import me.leeyeeun.bookhub.wish.service.WishService;
@@ -84,5 +85,10 @@ public class WishController {
         long count = wishService.countWishesByYearAndMonth(principal, year, month);
         return RspTemplate.success(HttpStatus.OK, "위시글 개수 조회 성공", count);
     }
-
+    @GetMapping("/book-genre")
+    @Operation(method = "GET", summary = "장르 통계 조회", description = "작성된 모든 위시글을 기준(Progress의 UNREAD,READING,FINISHED을 모두 포함)으로 장르(Category) 비율을 조회합니다.")
+    public RspTemplate<List<CategoryPercentageResponseDto>> getCategoryStatistics(Principal principal) {
+        List<CategoryPercentageResponseDto> stats = wishService.getCategoryGenre(principal);
+        return RspTemplate.success(HttpStatus.OK, "장르별 통계 조회 성공", stats);
+    }
 }
