@@ -19,15 +19,15 @@ public class BookService {
     private final AladinClient aladinClient;
 
     public List<BookResponseDto> getBestsellers() {
-        return convert(aladinClient.fetchBooks("Bestseller", 3));
+        return convert(aladinClient.fetchBooks("Bestseller", 12));
     }
 
     public List<BookResponseDto> getNewBooks() {
-        return convert(aladinClient.fetchBooks("ItemNewSpecial", 3));
+        return convert(aladinClient.fetchBooks("ItemNewSpecial", 12));
     }
 
     public List<BookResponseDto> getRandomBooks() {
-        List<BookResponseDto> books = convert(aladinClient.fetchBooks("BlogBest", 10));
+        List<BookResponseDto> books = convert(aladinClient.fetchBooks("BlogBest", 12));
         if (books.isEmpty()) {
             log.warn("에디터 추천 도서 없음. 베스트셀러로 대체.");
             books = getBestsellers();
