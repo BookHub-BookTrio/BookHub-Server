@@ -2,6 +2,8 @@ package me.leeyeeun.bookhub.member.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import me.leeyeeun.bookhub.global.exception.CustomException;
+import me.leeyeeun.bookhub.global.exception.Error;
 import me.leeyeeun.bookhub.member.controller.dto.request.MemberInfoUpdateRequestDto;
 import me.leeyeeun.bookhub.member.controller.dto.request.MemberJoinRequestDto;
 import me.leeyeeun.bookhub.member.controller.dto.request.MemberLoginRequestDto;
@@ -26,20 +28,20 @@ public class MemberService {
     @Transactional(readOnly = true)
     public Member findById(Long id) {
         return memberRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException( "해당 멤버를 찾지 못했습니다.")
+                () -> new CustomException(Error.NOT_FOUND_USER_EXCEPTION, Error.NOT_FOUND_USER_EXCEPTION.getMessage())
         );
     }
 
     private Member findByEmail(String email) {
         return memberRepository.findByEmail(email).orElseThrow(
-                () -> new IllegalArgumentException("해당 멤버를 찾지 못했습니다.")
+                () -> new CustomException(Error.NOT_FOUND_USER_EXCEPTION, Error.NOT_FOUND_USER_EXCEPTION.getMessage())
         );
     }
 
     @Transactional(readOnly = true)
     public Member findByRefreshToken(String refreshToken) {
         return memberRepository.findByRefreshToken(refreshToken).orElseThrow(
-                () -> new IllegalArgumentException("해당 멤버를 찾지 못했습니다.")
+                () -> new CustomException(Error.REFRESH_TOKEN_EXPIRED_EXCEPTION, Error.REFRESH_TOKEN_EXPIRED_EXCEPTION.getMessage())
         );
     }
 
@@ -48,12 +50,12 @@ public class MemberService {
     public Member join(MemberJoinRequestDto memberJoinRequestDto) {
         // 존재하는 이메일 검증
         if (memberRepository.existsByEmail(memberJoinRequestDto.email())) {
-            throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
+            throw new CustomException(Error.EXIST_USER, Error.EXIST_USER.getMessage());
         }
 
         // 비밀번호와 비밀번호 확인이 같은지 검증
         if (!memberJoinRequestDto.password().equals(memberJoinRequestDto.passwordCheck())) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new CustomException(Error.BAD_REQUEST_PASSWORD, Error.BAD_REQUEST_PASSWORD.getMessage());
         }
 
         Member member = Member.builder()
@@ -72,7 +74,7 @@ public class MemberService {
     public Member login(MemberLoginRequestDto memberLoginRequestDto) {
         Member member = findByEmail(memberLoginRequestDto.email());
         if (!passwordEncoder.matches(memberLoginRequestDto.password(), member.getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new CustomException(Error.BAD_REQUEST_PASSWORD, Error.BAD_REQUEST_PASSWORD.getMessage());
         }
         return member;
     }

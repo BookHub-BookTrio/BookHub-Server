@@ -2,6 +2,8 @@ package me.leeyeeun.bookhub.global.oauth2.kakao.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import me.leeyeeun.bookhub.global.exception.CustomException;
+import me.leeyeeun.bookhub.global.exception.Error;
 import me.leeyeeun.bookhub.global.oauth2.kakao.domain.LoginResult;
 import me.leeyeeun.bookhub.global.oauth2.kakao.domain.RefreshToken;
 import me.leeyeeun.bookhub.global.oauth2.kakao.dto.TokenDto;
@@ -29,10 +31,13 @@ public class AuthService {
         result = kakaoService.loginOrSignUp(accessToken);
 
         if (result == null) {
-            throw new IllegalArgumentException("회원 정보가 없습니다.");
+            throw new CustomException(Error.NOT_FOUND_USER_EXCEPTION, Error.NOT_FOUND_USER_EXCEPTION.getMessage());
         }
 
         TokenDto tokenDto = tokenProvider.createToken(result.member());
+        if (tokenDto == null) {
+            throw new CustomException(Error.JWT_CREATION_EXCEPTION, Error.JWT_CREATION_EXCEPTION.getMessage());
+        }
 
         return tokenDto;
     }
