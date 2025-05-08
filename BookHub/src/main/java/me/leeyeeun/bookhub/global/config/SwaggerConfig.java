@@ -3,6 +3,8 @@ package me.leeyeeun.bookhub.global.config;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,8 +16,17 @@ public class SwaggerConfig {
 
     @Bean
     public OpenAPI openAPI() {
+        SecurityScheme apiKey = new SecurityScheme()
+                .type(SecurityScheme.Type.APIKEY)
+                .in(SecurityScheme.In.HEADER)
+                .name("Authorization");
+
+        SecurityRequirement securityRequirement = new SecurityRequirement()
+                .addList("Bearer Token");
+
         return new OpenAPI()
-                .components(new Components())
+                .components(new Components().addSecuritySchemes("Bearer Token", apiKey))
+                .addSecurityItem(securityRequirement)
                 .info(info())
                 .servers(servers());
     }
@@ -29,7 +40,7 @@ public class SwaggerConfig {
 
     private List<Server> servers() {
         return List.of(new Server()
-                .url("http://localhost:8080") // Todo: 배포 후 수정하기
+                .url("https://book-hub.store")
                 .description("Configured Server")
         );
     }

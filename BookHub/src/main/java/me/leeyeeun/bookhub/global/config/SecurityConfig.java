@@ -9,6 +9,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -38,6 +40,8 @@ public class SecurityConfig {
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/v3/api-docs/**").permitAll() // Swagger API 문서 허용
                         .requestMatchers("api/v1/oauth2/**").permitAll() // OAuth2 허용
+                        .requestMatchers("api/v1/internal/**").permitAll() // 자체 로그인 및 회원가입 허용
+                        .requestMatchers("/api/v1/book/**").permitAll() // 알라딘 OpenApi 추천 도서 조회 허용
 
                         .anyRequest().authenticated() // 그 외 모든 요청은 인증이 필요하도록 설정
                 ) // 인증 및 권한 부여 규칙 설정
@@ -53,7 +57,8 @@ public class SecurityConfig {
     public CorsConfigurationSource configurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOriginPatterns(List.of("*")); // 모든 도메인에서의 요청 허용
+        configuration.setAllowedOrigins(List.of("https://book-hub.store", "https://www.book-hub.site"));
+//        configuration.setAllowedOriginPatterns(List.of("*")); // 모든 도메인에서의 요청 허용
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")); // HTTP 에 대한 요청 허용
         configuration.setAllowedHeaders(List.of("*")); // 모든 헤더 요청 허용
         configuration.setExposedHeaders(List.of("Access-Control-Allow-Credentials", "Authorization", "Set-Cookie")); // 특정 응답 헤더를 클라이언트가 접근할 수 있도록 노출
@@ -63,5 +68,10 @@ public class SecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration); // 모든 경로에 대해 CORS 설정 적용
         return source;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 }
