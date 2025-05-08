@@ -57,7 +57,7 @@ public class SecurityConfig {
     public CorsConfigurationSource configurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(List.of("https://book-hub.store", "https://book-hub-front-vert.vercel.app")); // Todo: 프론트 도메인 적용 후 바꾸기
+        configuration.setAllowedOrigins(List.of("https://book-hub.store", "https://www.book-hub.site"));
 //        configuration.setAllowedOriginPatterns(List.of("*")); // 모든 도메인에서의 요청 허용
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")); // HTTP 에 대한 요청 허용
         configuration.setAllowedHeaders(List.of("*")); // 모든 헤더 요청 허용
