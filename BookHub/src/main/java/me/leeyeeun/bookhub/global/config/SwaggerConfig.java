@@ -40,7 +40,7 @@ public class SwaggerConfig {
 
     private List<Server> servers() {
         return List.of(new Server()
-                .url("http://localhost:8080") // Todo: 배포 후 수정하기
+                .url("https://book-hub.store")
                 .description("Configured Server")
         );
     }

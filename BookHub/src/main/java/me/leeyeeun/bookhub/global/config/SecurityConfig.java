@@ -57,7 +57,8 @@ public class SecurityConfig {
     public CorsConfigurationSource configurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOriginPatterns(List.of("*")); // 모든 도메인에서의 요청 허용
+        configuration.setAllowedOrigins(List.of("https://book-hub.store", "https://www.book-hub.site"));
+//        configuration.setAllowedOriginPatterns(List.of("*")); // 모든 도메인에서의 요청 허용
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")); // HTTP 에 대한 요청 허용
         configuration.setAllowedHeaders(List.of("*")); // 모든 헤더 요청 허용
         configuration.setExposedHeaders(List.of("Access-Control-Allow-Credentials", "Authorization", "Set-Cookie")); // 특정 응답 헤더를 클라이언트가 접근할 수 있도록 노출
