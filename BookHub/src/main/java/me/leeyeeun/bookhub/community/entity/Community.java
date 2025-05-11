@@ -2,7 +2,7 @@ package me.leeyeeun.bookhub.community.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import me.leeyeeun.bookhub.community.controller.dto.request.CommnuityRequestDto;
+import me.leeyeeun.bookhub.community.controller.dto.request.CommunityRequestDto;
 import me.leeyeeun.bookhub.member.entity.Member;
 
 import java.time.LocalDateTime;
@@ -38,7 +38,7 @@ public class Community {
         this.createdat = LocalDateTime.now();
     }
 
-    public void update(CommnuityRequestDto commnuityRequestDto) { // 부분 수정 가능
+    public void update(CommunityRequestDto commnuityRequestDto) { // 부분 수정 가능
         if (commnuityRequestDto.title() != null) this.title = commnuityRequestDto.title();
         if (commnuityRequestDto.content() != null) this.content = commnuityRequestDto.content();
     }

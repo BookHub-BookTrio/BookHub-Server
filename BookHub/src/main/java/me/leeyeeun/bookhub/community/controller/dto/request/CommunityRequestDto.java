@@ -1,6 +1,6 @@
 package me.leeyeeun.bookhub.community.controller.dto.request;
 
-public record CommnuityRequestDto(
+public record CommunityRequestDto(
         String title,
         String content
 ) {
