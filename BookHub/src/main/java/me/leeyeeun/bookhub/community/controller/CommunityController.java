@@ -3,8 +3,8 @@ package me.leeyeeun.bookhub.community.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import me.leeyeeun.bookhub.community.controller.dto.request.CommnuityRequestDto;
-import me.leeyeeun.bookhub.community.controller.dto.response.CommnuityResponseDto;
+import me.leeyeeun.bookhub.community.controller.dto.request.CommunityRequestDto;
+import me.leeyeeun.bookhub.community.controller.dto.response.CommunityResponseDto;
 import me.leeyeeun.bookhub.community.entity.Community;
 import me.leeyeeun.bookhub.community.service.CommunityService;
 import me.leeyeeun.bookhub.global.template.RspTemplate;
@@ -24,7 +24,7 @@ public class CommunityController {
 
     @PostMapping
     @Operation(method = "POST", summary = "커뮤니티글 생성", description = "커뮤니티글을 생성합니다.")
-    public RspTemplate<?> createWish(Principal principal, @RequestBody CommnuityRequestDto commnuityRequestDto) {
+    public RspTemplate<?> createWish(Principal principal, @RequestBody CommunityRequestDto commnuityRequestDto) {
         Long communityId = communityService.createCommunity(commnuityRequestDto, principal);
         return RspTemplate.success(HttpStatus.CREATED, "위시글 작성 성공", communityId);
     }
@@ -34,7 +34,7 @@ public class CommunityController {
     public RspTemplate<?> updateCommunity(
             Principal principal,
             @RequestParam Long id,
-            @RequestBody CommnuityRequestDto commnuityRequestDto
+            @RequestBody CommunityRequestDto commnuityRequestDto
     ) {
         communityService.updateCommunity(id, commnuityRequestDto, principal);
         return RspTemplate.success(HttpStatus.OK, "커뮤니티글 수정 성공", id);
@@ -49,26 +49,28 @@ public class CommunityController {
 
     @GetMapping("/detail")
     @Operation(summary = "커뮤니티글 한 개 조회", description = "커뮤니티글 한 개를 조회합니다.")
-    public RspTemplate<Community> getCommunity(@RequestParam Long id) {
-        return RspTemplate.success(HttpStatus.OK, "커뮤니티글 조회 성공", communityService.findCommunityById(id));
+    public RspTemplate<CommunityResponseDto> getCommunity(@RequestParam Long id, Principal principal) {
+        Community community = communityService.getCommunity(id);
+        CommunityResponseDto commnuityResponseDto = CommunityResponseDto.from(community);
+        return RspTemplate.success(HttpStatus.OK, "커뮤니티글 조회 성공", commnuityResponseDto);
     }
 
     @GetMapping
     @Operation(method = "GET", summary = "커뮤니티글 전체 조회", description = "전체 커뮤니티글을 조회합니다.")
-    public RspTemplate<List<CommnuityResponseDto>> getAllCommunities() {
+    public RspTemplate<List<CommunityResponseDto>> getAllCommunities() {
         List<Community> communities = communityService.getAllCommunities();
-        List<CommnuityResponseDto> commnuityResponseDtos = communities.stream()
-                .map(CommnuityResponseDto::from)
+        List<CommunityResponseDto> commnuityResponseDtos = communities.stream()
+                .map(CommunityResponseDto::from)
                 .toList();
         return RspTemplate.success(HttpStatus.OK, "전체 커뮤니티글 조회 성공", commnuityResponseDtos);
     }
 
     @GetMapping("/my")
     @Operation(method = "GET", summary = "본인이 작성한 커뮤니티글 조회", description = "본인이 작성한 커뮤니티글만 조회합니다.")
-    public RspTemplate<List<CommnuityResponseDto>> getMyCommunities(Principal principal) {
+    public RspTemplate<List<CommunityResponseDto>> getMyCommunities(Principal principal) {
         List<Community> communities = communityService.getMyCommunities(principal);
-        List<CommnuityResponseDto> commnuityResponseDtos = communities.stream()
-                .map(CommnuityResponseDto::from)
+        List<CommunityResponseDto> commnuityResponseDtos = communities.stream()
+                .map(CommunityResponseDto::from)
                 .toList();
         return RspTemplate.success(HttpStatus.OK, "본인이 작성한 커뮤니티글 조회 성공", commnuityResponseDtos);
     }
