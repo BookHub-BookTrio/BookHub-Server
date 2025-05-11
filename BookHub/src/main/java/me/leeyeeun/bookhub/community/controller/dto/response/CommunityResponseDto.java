@@ -5,18 +5,18 @@ import me.leeyeeun.bookhub.member.entity.Member;
 
 import java.time.LocalDateTime;
 
-public record CommnuityResponseDto(
+public record CommunityResponseDto(
         Long id,
         String title,
         String content,
         LocalDateTime createdat,
         String nickname
 ) {
-    public static CommnuityResponseDto from(Community community) {
+    public static CommunityResponseDto from(Community community) {
         Member member = community.getMember();
         String nickname = member != null ? member.getNickname() : "별명 없음";
 
-        return new CommnuityResponseDto(
+        return new CommunityResponseDto(
                 community.getId(),
                 community.getTitle(),
                 community.getContent(),

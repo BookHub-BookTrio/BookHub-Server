@@ -1,7 +1,7 @@
 package me.leeyeeun.bookhub.community.service;
 
 import lombok.RequiredArgsConstructor;
-import me.leeyeeun.bookhub.community.controller.dto.request.CommnuityRequestDto;
+import me.leeyeeun.bookhub.community.controller.dto.request.CommunityRequestDto;
 import me.leeyeeun.bookhub.community.entity.Community;
 import me.leeyeeun.bookhub.community.repository.CommunityRepository;
 import me.leeyeeun.bookhub.member.entity.Member;
@@ -38,7 +38,7 @@ public class CommunityService {
     }
 
     @Transactional
-    public Long createCommunity(CommnuityRequestDto commnuityRequestDto, Principal principal) {
+    public Long createCommunity(CommunityRequestDto commnuityRequestDto, Principal principal) {
         Member member = getMemberFromPrincipal(principal);
 
         Community community = Community.builder()
@@ -51,7 +51,7 @@ public class CommunityService {
     }
 
     @Transactional
-    public Community updateCommunity(Long communityId, CommnuityRequestDto commnuityRequestDto, Principal principal) {
+    public Community updateCommunity(Long communityId, CommunityRequestDto commnuityRequestDto, Principal principal) {
         Community community = findCommunityById(communityId);
         getMemberFromPrincipal(principal);
 
@@ -65,6 +65,11 @@ public class CommunityService {
         getMemberFromPrincipal(principal);
 
         communityRepository.delete(community);
+    }
+
+    @Transactional(readOnly = true)
+    public Community getCommunity(Long id) {
+        return findCommunityById(id);
     }
 
     @Transactional(readOnly = true)
