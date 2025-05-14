@@ -3,6 +3,8 @@ package me.leeyeeun.bookhub.global.oauth2.kakao.service;
 import io.netty.handler.codec.http.HttpHeaderValues;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import me.leeyeeun.bookhub.global.exception.CustomException;
+import me.leeyeeun.bookhub.global.exception.Error;
 import me.leeyeeun.bookhub.global.oauth2.kakao.domain.LoginResult;
 import me.leeyeeun.bookhub.global.oauth2.kakao.domain.SocialType;
 import me.leeyeeun.bookhub.global.oauth2.kakao.dto.KakaoTokenResponseDto;
@@ -59,7 +61,7 @@ public class KakaoService {
                                 .flatMap(error -> {
                                     log.error("카카오 OAuth 요청 정보: clientId={}, clientSecret={}", clientId, clientSecret);
                                     log.error("카카오 OAuth 토큰 요청 실패: {}", error);
-                                    return Mono.error(new RuntimeException("카카오 OAuth 토큰 요청 실패"));
+                                    return Mono.error(new CustomException(Error.UNPROCESSABLE_KAKAO_SERVER_EXCEPTION, error));
                                 })
                 )
                 .bodyToMono(KakaoTokenResponseDto.class)
@@ -75,7 +77,7 @@ public class KakaoService {
 
     // 액세스 토큰을 이용해 카카오로부터 사용자 정보를 받아오는 메서드
     public KakaoUserInfo getUserInfo(String accessToken) {
-        return WebClient.create(KAUTH_USER_URL_HOST)
+        KakaoUserInfo userInfo = WebClient.create(KAUTH_USER_URL_HOST)
                 .get()
                 .uri(uriBuilder -> uriBuilder
                         .scheme("https")
@@ -84,8 +86,20 @@ public class KakaoService {
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
                 .header(HttpHeaders.CONTENT_TYPE, HttpHeaderValues.APPLICATION_X_WWW_FORM_URLENCODED.toString())
                 .retrieve()
+                .onStatus(HttpStatusCode::isError, clientResponse ->
+                        clientResponse.bodyToMono(String.class)
+                                .flatMap(error -> {
+                                    log.error("카카오 사용자 정보 요청 실패: {}", error);
+                                    return Mono.error(new CustomException(Error.UNAUTHORIZED_ACCESS, error));
+                                }))
                 .bodyToMono(KakaoUserInfo.class)
                 .block();
+
+        if (userInfo== null) {
+            throw new CustomException(Error.UNAUTHORIZED_ACCESS, "카카오 사용자 정보 수신 실패");
+        }
+
+        return userInfo;
     }
 
     @Transactional
