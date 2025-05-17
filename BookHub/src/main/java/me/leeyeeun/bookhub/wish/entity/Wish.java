@@ -5,6 +5,7 @@ import lombok.*;
 import me.leeyeeun.bookhub.member.entity.Member;
 import me.leeyeeun.bookhub.wish.controller.dto.request.WishRequestDto;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "wish")
 public class Wish {
 
