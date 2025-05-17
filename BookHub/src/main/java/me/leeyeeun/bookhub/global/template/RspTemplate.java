@@ -1,6 +1,7 @@
 package me.leeyeeun.bookhub.global.template;
 
 import lombok.*;
+import me.leeyeeun.bookhub.global.exception.Error;
 import org.springframework.http.HttpStatus;
 
 // 응답 템플릿
@@ -28,4 +29,15 @@ public class RspTemplate<T> {
         return new RspTemplate<>(status.value(), message, data);
     }
 
+    public static RspTemplate error(Error error){
+        return new RspTemplate<>(error.getErrorCode(), error.getMessage());
+    }
+
+    public static RspTemplate error(Error error, String message){
+        return new RspTemplate<>(error.getErrorCode(), message);
+    }
+
+    public static RspTemplate error(int customCode, String message){
+        return new RspTemplate<>(customCode, message);
+    }
 }
