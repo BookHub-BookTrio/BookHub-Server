@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import me.leeyeeun.bookhub.global.oauth2.kakao.domain.SocialType;
 
-import java.time.LocalDate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

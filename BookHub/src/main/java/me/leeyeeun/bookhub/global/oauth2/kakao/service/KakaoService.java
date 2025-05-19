@@ -110,10 +110,19 @@ public class KakaoService {
         Long kakaoId = userInfo.getId();
         Optional<Member> member = getByKaKaoId(kakaoId);
 
+        // 닉네임 기본값으로 카카오 닉네임 사용
+        String nickname = userInfo.getKakaoAccount().getProfile().getNickName();
+
+        // 닉네임이 비어있거나 중복이면 랜덤으로 대체
+        if (nickname == null || nickname.isBlank() || memberRepository.existsByNickname(nickname)) {
+            nickname = generateUniqueNickname();
+        }
+
         if (member.isEmpty()) {
             member = Optional.of(memberRepository.save(
                     Member.builder()
                             .name(userInfo.getKakaoAccount().getProfile().getNickName())
+                            .nickname(nickname)
                             .email(userInfo.getKakaoAccount().getEmail())
                             .kakaoId(kakaoId)
                             .socialType(SocialType.KAKAO)
@@ -124,6 +133,37 @@ public class KakaoService {
 
         return new LoginResult(member.get());
 
+    }
+
+    // 닉네임 자동 생성
+    private static final String[] ADJECTIVES = {
+            "귀여운", "상냥한", "멋진", "용감한", "지혜로운", "조용한", "활발한", "명랑한", "밝은", "차분한", "깜찍한", "사랑스러운"
+    };
+
+    private static final String[] NOUNS = {
+            "개구리", "고양이", "강아지", "곰돌이", "햄스터", "수달", "토끼", "돼지", "원숭이", "양", "용", "판다", "사자", "호랑이", "캥거루", "쿼카"
+    };
+
+    private static final int MAX_ATTEMPTS = 100;
+    private static final int RANDOM_SUFFIX_BOUND = 100;
+
+    private String generateUniqueNickname() {
+        int attempts = 0;
+        String nickname;
+
+        do {
+            String adjective = ADJECTIVES[(int) (Math.random() * ADJECTIVES.length)];
+            String noun = NOUNS[(int) (Math.random() * NOUNS.length)];
+            int randomNumber = (int) (Math.random() * RANDOM_SUFFIX_BOUND);
+            nickname = adjective + noun + randomNumber;
+
+            attempts++;
+            if (attempts > MAX_ATTEMPTS) {
+                throw new RuntimeException("랜덤 닉네임 생성을 실패했습니다. 중복이 너무 많으니 다시 시도해주세요.");
+            }
+        } while (memberRepository.existsByNickname(nickname));
+
+        return nickname;
     }
 
     @Transactional(readOnly = true)
