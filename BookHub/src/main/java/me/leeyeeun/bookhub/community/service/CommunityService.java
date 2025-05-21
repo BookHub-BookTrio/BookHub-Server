@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import me.leeyeeun.bookhub.community.controller.dto.request.CommunityRequestDto;
 import me.leeyeeun.bookhub.community.entity.Community;
 import me.leeyeeun.bookhub.community.repository.CommunityRepository;
+import me.leeyeeun.bookhub.global.exception.CustomException;
+import me.leeyeeun.bookhub.global.exception.Error;
 import me.leeyeeun.bookhub.member.entity.Member;
 import me.leeyeeun.bookhub.member.repository.MemberRepository;
 import org.springframework.stereotype.Service;
@@ -22,19 +24,26 @@ public class CommunityService {
     @Transactional(readOnly = true)
     public Community findCommunityById(Long id) {
         return communityRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("커뮤니티글이 존재하지 않습니다."));
+                .orElseThrow(() -> new CustomException(Error.NOT_FOUND_COMMUNITY, Error.NOT_FOUND_COMMUNITY.getMessage()));
     }
 
     @Transactional(readOnly = true)
     public Member findMemberById(Long id) {
         return memberRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+                .orElseThrow(() -> new CustomException(Error.NOT_FOUND_USER_EXCEPTION, Error.NOT_FOUND_USER_EXCEPTION.getMessage()));
     }
 
     @Transactional(readOnly = true)
     public Member getMemberFromPrincipal(Principal principal) {
-        Long memberId = Long.parseLong(principal.getName());
-        return findMemberById(memberId);
+        if (principal == null || principal.getName() == null) {
+            throw new CustomException(Error.UN_AUTHORIZED, Error.UN_AUTHORIZED.getMessage());
+        }
+        try {
+            Long memberId = Long.parseLong(principal.getName());
+            return findMemberById(memberId);
+        } catch (NumberFormatException e) {
+            throw new CustomException(Error.UN_AUTHORIZED, "유효하지 않은 사용자 식별자입니다.");
+        }
     }
 
     @Transactional
@@ -53,7 +62,11 @@ public class CommunityService {
     @Transactional
     public Community updateCommunity(Long communityId, CommunityRequestDto commnuityRequestDto, Principal principal) {
         Community community = findCommunityById(communityId);
-        getMemberFromPrincipal(principal);
+        Member member = getMemberFromPrincipal(principal);
+
+        if (!community.getMember().getId().equals(member.getId())) {
+            throw new CustomException(Error.INVALID_USER_ACCESS, Error.INVALID_USER_ACCESS.getMessage());
+        }
 
         community.update(commnuityRequestDto);
         return community;
@@ -62,7 +75,11 @@ public class CommunityService {
     @Transactional
     public void deleteCommunity(Long communityId, Principal principal) {
         Community community = findCommunityById(communityId);
-        getMemberFromPrincipal(principal);
+        Member member = getMemberFromPrincipal(principal);
+
+        if (!community.getMember().getId().equals(member.getId())) {
+            throw new CustomException(Error.INVALID_USER_ACCESS, Error.INVALID_USER_ACCESS.getMessage());
+        }
 
         communityRepository.delete(community);
     }
