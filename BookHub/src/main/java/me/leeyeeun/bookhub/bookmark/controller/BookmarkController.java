@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/community/bookmark")
-@Tag(name = "위시글(독서록) 북마크 API", description = "WishPage 북마크 관련 API들 입니다.")
+@Tag(name = "커뮤니티글 북마크 API", description = "CommunityPage 북마크 관련 API들 입니다.")
 public class BookmarkController {
 
     private final BookmarkService bookmarkService;
@@ -40,5 +41,4 @@ public class BookmarkController {
     public ResponseEntity<List<BookmarkResponseDto>> getBookmarks(Principal principal) {
         return ResponseEntity.ok(bookmarkService.getUserBookmarks(principal));
     }
-
 }

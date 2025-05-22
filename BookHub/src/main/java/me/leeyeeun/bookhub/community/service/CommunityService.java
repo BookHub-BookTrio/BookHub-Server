@@ -42,7 +42,7 @@ public class CommunityService {
             Long memberId = Long.parseLong(principal.getName());
             return findMemberById(memberId);
         } catch (NumberFormatException e) {
-            throw new CustomException(Error.UN_AUTHORIZED, "유효하지 않은 사용자 식별자입니다.");
+            throw new CustomException(Error.UN_AUTHORIZED, Error.UN_AUTHORIZED.getMessage());
         }
     }
 
