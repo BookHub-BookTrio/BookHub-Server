@@ -20,6 +20,9 @@ public enum Error {
     BOOKMARK_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "이미 북마크한 글입니다."),
     BOOKMARK_NOT_FOUND(HttpStatus.NOT_FOUND, "북마크가 존재하지 않습니다."),
 
+    // Wish
+    WISH_NOT_FOUND(HttpStatus.NOT_FOUND, "독서록을 찾을 수 없습니다."),
+
     // 400 BAD REQUEST EXCEPTION
     BAD_REQUEST_ID(HttpStatus.BAD_REQUEST, "잘못된 id값입니다."),
     BAD_REQUEST_PASSWORD(HttpStatus.BAD_REQUEST, "잘못된 패스워드 요청"),
