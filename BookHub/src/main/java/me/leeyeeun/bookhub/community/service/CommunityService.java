@@ -1,6 +1,7 @@
 package me.leeyeeun.bookhub.community.service;
 
 import lombok.RequiredArgsConstructor;
+import me.leeyeeun.bookhub.bookmark.repository.BookmarkRepository;
 import me.leeyeeun.bookhub.community.controller.dto.request.CommunityRequestDto;
 import me.leeyeeun.bookhub.community.entity.Community;
 import me.leeyeeun.bookhub.community.repository.CommunityRepository;
@@ -20,6 +21,7 @@ public class CommunityService {
 
     private final CommunityRepository communityRepository;
     private final MemberRepository memberRepository;
+    private final BookmarkRepository bookmarkRepository;
 
     @Transactional(readOnly = true)
     public Community findCommunityById(Long id) {
@@ -80,6 +82,8 @@ public class CommunityService {
         if (!community.getMember().getId().equals(member.getId())) {
             throw new CustomException(Error.INVALID_USER_ACCESS, Error.INVALID_USER_ACCESS.getMessage());
         }
+
+        bookmarkRepository.deleteAllByCommunity(community);
 
         communityRepository.delete(community);
     }
