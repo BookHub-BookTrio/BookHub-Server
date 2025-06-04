@@ -37,7 +37,7 @@ public class Member {
     @Column(name = "kakao_id", unique = true)
     private Long kakaoId;
 
-    @Column(name = "pictureUrl")
+    @Column(name = "picture_url")
     private String pictureUrl;
 
     private String introduction;

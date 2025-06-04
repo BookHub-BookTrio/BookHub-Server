@@ -74,7 +74,7 @@ public class MemberService {
     public Member login(MemberLoginRequestDto memberLoginRequestDto) {
         Member member = findByEmail(memberLoginRequestDto.email());
         if (!passwordEncoder.matches(memberLoginRequestDto.password(), member.getPassword())) {
-            throw new CustomException(Error.BAD_REQUEST_PASSWORD, "비밀번호가 일치하지 않습니다.");
+            throw new CustomException(Error.BAD_REQUEST_PASSWORD, Error.BAD_REQUEST_PASSWORD.getMessage());
         }
         return member;
     }
