@@ -2,6 +2,7 @@ package me.leeyeeun.bookhub.community.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import me.leeyeeun.bookhub.community.controller.dto.request.CommunityRequestDto;
 import me.leeyeeun.bookhub.community.controller.dto.response.CommunityResponseDto;
@@ -24,7 +25,7 @@ public class CommunityController {
 
     @PostMapping
     @Operation(method = "POST", summary = "커뮤니티글 생성", description = "커뮤니티글을 생성합니다.")
-    public RspTemplate<?> createWish(Principal principal, @RequestBody CommunityRequestDto commnuityRequestDto) {
+    public RspTemplate<?> createWish(Principal principal, @Valid @RequestBody CommunityRequestDto commnuityRequestDto) {
         Long communityId = communityService.createCommunity(commnuityRequestDto, principal);
         return RspTemplate.success(HttpStatus.CREATED, "위시글 작성 성공", communityId);
     }
@@ -33,7 +34,7 @@ public class CommunityController {
     @Operation(method = "PUT", summary = "커뮤니티글 수정", description = "커뮤니티글을 수정합니다.")
     public RspTemplate<?> updateCommunity(
             Principal principal,
-            @RequestParam Long id,
+            @Valid @RequestParam Long id,
             @RequestBody CommunityRequestDto commnuityRequestDto
     ) {
         communityService.updateCommunity(id, commnuityRequestDto, principal);

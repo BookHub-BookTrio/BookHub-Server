@@ -2,6 +2,7 @@ package me.leeyeeun.bookhub.wish.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import me.leeyeeun.bookhub.global.template.RspTemplate;
 import me.leeyeeun.bookhub.wish.controller.dto.request.WishRequestDto;
@@ -25,7 +26,7 @@ public class WishController {
 
     @PostMapping
     @Operation(method = "POST", summary = "위시글 생성", description = "위시글을 생성합니다.")
-    public RspTemplate<?> createWish(Principal principal, @RequestBody WishRequestDto wishRequestDto) {
+    public RspTemplate<?> createWish(Principal principal, @Valid @RequestBody WishRequestDto wishRequestDto) {
         Long wishId = wishService.createWish(wishRequestDto, principal);
         return RspTemplate.success(HttpStatus.CREATED, "위시글 작성 성공", wishId);
     }
@@ -34,7 +35,7 @@ public class WishController {
     @Operation(method = "PUT", summary = "위시글 수정", description = "위시글을 수정합니다.")
     public RspTemplate<?> updateWish(
             Principal principal,
-            @RequestParam Long id,
+            @Valid @RequestParam Long id,
             @RequestBody WishRequestDto wishRequestDto
     ) {
         wishService.updateWish(id, wishRequestDto, principal);
