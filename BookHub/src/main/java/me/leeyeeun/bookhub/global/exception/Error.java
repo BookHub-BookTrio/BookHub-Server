@@ -25,7 +25,7 @@ public enum Error {
 
     // 400 BAD REQUEST EXCEPTION
     BAD_REQUEST_ID(HttpStatus.BAD_REQUEST, "잘못된 id값입니다."),
-    BAD_REQUEST_PASSWORD(HttpStatus.BAD_REQUEST, "잘못된 패스워드 요청"),
+    BAD_REQUEST_PASSWORD(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다."),
     BAD_REQUEST_VALIDATION(HttpStatus.BAD_REQUEST, "유효한 값으로 요청을 다시 보내주세요."),
     BAD_REQUEST_PROVIDER(HttpStatus.BAD_REQUEST, "다른 유형 로그인으로 가입하셨습니다."),
     BAD_REQUEST_EMAIL(HttpStatus.BAD_REQUEST, "사용할 수 없는 이메일입니다."),
