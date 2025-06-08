@@ -2,6 +2,7 @@ package me.leeyeeun.bookhub.member.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import me.leeyeeun.bookhub.global.template.RspTemplate;
 import me.leeyeeun.bookhub.member.controller.dto.request.MemberInfoUpdateRequestDto;
@@ -31,7 +32,7 @@ public class MemberController {
     @Operation(method = "PUT", summary = "회원 정보 수정", description = "회원 정보를 수정합니다. 본인의 정보만 수정이 가능하며 비밀번호는 수정이 불가능합니다.")
     public RspTemplate<MemberInfoUpdateRequestDto> updateMemberInfo(
             Principal principal,
-            @RequestBody MemberInfoUpdateRequestDto memberInfoUpdateRequestDto) {
+            @Valid @RequestBody MemberInfoUpdateRequestDto memberInfoUpdateRequestDto) {
 
         MemberInfoUpdateRequestDto updatedMember = memberService.updateMemberInfo(principal, memberInfoUpdateRequestDto);
         return RspTemplate.success(HttpStatus.OK, "회원 정보 수정 성공", updatedMember);
