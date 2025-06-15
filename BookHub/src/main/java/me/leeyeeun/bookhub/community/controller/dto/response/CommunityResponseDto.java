@@ -22,8 +22,8 @@ public record CommunityResponseDto(
                 community.getTitle(),
                 community.getContent(),
                 community.getCreatedat(),
-                member.getPictureUrl(),
-                nickname
+                nickname,
+                member.getPictureUrl()
         );
     }
 }
