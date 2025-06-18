@@ -63,3 +63,7 @@ springdoc:
 aladin:
   api:
     key: ${aladin.api.key}
+
+gemini:
+  api:
+    key: ${gemini.api.key}
