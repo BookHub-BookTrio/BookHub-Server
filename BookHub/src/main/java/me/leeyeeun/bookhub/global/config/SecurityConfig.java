@@ -42,6 +42,7 @@ public class SecurityConfig {
                         .requestMatchers("api/v1/oauth2/**").permitAll() // OAuth2 허용
                         .requestMatchers("api/v1/internal/**").permitAll() // 자체 로그인 및 회원가입 허용
                         .requestMatchers("/api/v1/book/**").permitAll() // 알라딘 OpenApi 추천 도서 조회 허용
+                        .requestMatchers("/api/v1/ai/**").permitAll() // Gemini AI 허용
 
                         .anyRequest().authenticated() // 그 외 모든 요청은 인증이 필요하도록 설정
                 ) // 인증 및 권한 부여 규칙 설정
