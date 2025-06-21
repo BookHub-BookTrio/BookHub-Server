@@ -26,8 +26,8 @@ public class Community {
     @Column(name = "content", nullable = false)
     private String content;
 
-    @Column(name = "createdat", nullable = false)
-    private LocalDateTime createdat;
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -35,7 +35,7 @@ public class Community {
 
     @PrePersist
     public void setCreatedAt() {
-        this.createdat = LocalDateTime.now();
+        this.createdAt = LocalDateTime.now();
     }
 
     public void update(CommunityRequestDto commnuityRequestDto) { // 부분 수정 가능

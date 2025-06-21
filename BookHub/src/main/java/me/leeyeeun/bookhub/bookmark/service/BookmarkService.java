@@ -88,7 +88,7 @@ public class BookmarkService {
         log.info("회원 id: {}", member.getId());
 
         return bookmarks.stream()
-                .map(bookmark -> BookmarkResponseDto.from(bookmark.getCommunity()))
+                .map(BookmarkResponseDto::from)
                 .collect(Collectors.toList());
     }
 
