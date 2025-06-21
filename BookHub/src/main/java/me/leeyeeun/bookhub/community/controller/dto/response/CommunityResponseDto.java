@@ -9,7 +9,7 @@ public record CommunityResponseDto(
         Long id,
         String title,
         String content,
-        LocalDateTime createdat,
+        LocalDateTime createdAt,
         String nickname,
         String pictureUrl
 ) {
@@ -21,7 +21,7 @@ public record CommunityResponseDto(
                 community.getId(),
                 community.getTitle(),
                 community.getContent(),
-                community.getCreatedat(),
+                community.getCreatedAt(),
                 nickname,
                 member.getPictureUrl()
         );

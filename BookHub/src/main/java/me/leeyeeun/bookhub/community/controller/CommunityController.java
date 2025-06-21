@@ -27,7 +27,7 @@ public class CommunityController {
     @Operation(method = "POST", summary = "커뮤니티글 생성", description = "커뮤니티글을 생성합니다.")
     public RspTemplate<?> createWish(Principal principal, @Valid @RequestBody CommunityRequestDto commnuityRequestDto) {
         Long communityId = communityService.createCommunity(commnuityRequestDto, principal);
-        return RspTemplate.success(HttpStatus.CREATED, "위시글 작성 성공", communityId);
+        return RspTemplate.success(HttpStatus.CREATED, "커뮤니티글 작성 성공", communityId);
     }
 
     @PutMapping
